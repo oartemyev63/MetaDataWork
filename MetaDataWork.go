@@ -2238,6 +2238,7 @@ func (t MetaDataWork) GetCommonPropByName(name string) CommonProp {
 		_obj := val.obj
 		switch obj := _obj.(type) {
 		case CommonProp:
+			obj.TypeObj = int(md_FldDef)
 			return obj
 		}
 	}
@@ -2253,6 +2254,8 @@ func (t MetaDataWork) GetConstantaByName(name string) ConstRec {
 		_obj := val.obj
 		switch obj := _obj.(type) {
 		case ConstRec:
+			//md_Const
+			obj.TypeObj = int(md_Const)
 			return obj
 		}
 	}
@@ -2803,7 +2806,7 @@ func (t MetaDataWork) ParsingTableAttributes(v string) string {
 		} else if strings.ToUpper(FirstPart) == "КОНСТАНТА" {
 			strChange = t.ParsingPropsConstant(FirstPart, TwoPart)
 		} else if strings.ToUpper(FirstPart) == "ОБЩИЙРЕКВИЗИТ" {
-			strChange = t.ParsingPropsConstant(FirstPart, TwoPart)
+			strChange = t.ParsingCommonProps(FirstPart, TwoPart)
 		} else {
 			tt := t.TableOfType[strings.ToUpper(FirstPart)]
 			if tt.Alias == "" {
