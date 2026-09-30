@@ -5275,6 +5275,8 @@ type ODBCRecordset struct {
 
 	ctx context.Context
 
+	debug bool
+
 	cols []string
 	vals []interface{}
 }
@@ -5284,8 +5286,13 @@ func NewODBCRecordset() ODBCRecordset {
 	r.MetaDataWork = NewMetaDataWork()
 	r.db = nil
 	r.rows = nil
+	r.debug = false
 
 	return r
+}
+
+func (t *ODBCRecordset) SetupDebug(debugOnOff bool) {
+	t.debug = debugOnOff
 }
 
 func (t *ODBCRecordset) Connection(connString string) error {
@@ -5420,6 +5427,9 @@ func (t *ODBCRecordset) Execute(q string) error {
 	if err != nil {
 		return err
 	}
+	if t.debug {
+		fmt.Println(q)
+	}
 	t.result, t.err = t.conn.ExecContext(t.ctx, q)
 
 	return t.err
@@ -5454,6 +5464,10 @@ func (t *ODBCRecordset) Exec(q string) error {
 	if t.err != nil {
 		return t.err
 	}
+	if t.debug {
+		fmt.Println(q)
+	}
+
 	//	t.rows, t.err = t.db.QueryContext(t.ctx, q)
 	t.rows, t.err = t.conn.QueryContext(t.ctx, q)
 	if t.err != nil {
