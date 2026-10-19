@@ -6054,6 +6054,10 @@ func (t ODBCRecordset) GetStringByName(name string) (string, error) {
 
 }
 
+func (t ODBCRecordset) GetDB() *sql.DB {
+	return t.db
+}
+
 // Find возвращает наименьший индекс i,
 // при котором x == a[i],
 // или len(a), если такого индекса нет.
